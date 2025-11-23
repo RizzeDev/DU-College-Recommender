@@ -1,4 +1,6 @@
 import pandas as pd
+from sklearn.linear_model import LinearRegression
+import numpy as np
 
 TOTAL_CANDIDATES = 1475000  # JEE 2025 approx
 
@@ -7,10 +9,8 @@ def rank_to_percentile(rank):
         return 0.0
     return round(100 - (rank / TOTAL_CANDIDATES * 100), 2)
 
-# Load CSV
-df = pd.read_csv("JEE.csv")   
+df = pd.read_csv("JEE.csv")
 
-# Convert closing ranks to percentiles
 df['Cutoff_2025'] = df['Closing_Rank'].apply(rank_to_percentile)
 
 college_data = df[['College', 'Branch', 'Cutoff_2025']]
@@ -30,3 +30,18 @@ def get_trend_data():
     }
     return pd.DataFrame(data)
 
+
+trend_df = get_trend_data()
+
+X = trend_df[['Year']]
+y = trend_df['Cutoff_Percentile']
+model = LinearRegression()
+model.fit(X, y)
+
+def predict_2026():
+    return round(float(model.predict([[2026]])), 2)
+
+def best_suited_2026(user_percentile):
+    predicted = predict_2026()
+    recommended = best_suited(user_percentile)
+    return predicted, recommended
