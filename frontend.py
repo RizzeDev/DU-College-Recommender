@@ -31,7 +31,7 @@ with tab2:
 
 # ----------------- TAB 3 -------------------
 with tab3:
-    st.subheader("JEE Advanced Cutoff Trend (2015–2025)")
+    st.subheader("JEE Mains Cutoff Trend for JEE Advance (2015–2025)")
     trend = bk.get_trend_data()
 
     chart = (
@@ -76,3 +76,4 @@ st.sidebar.markdown("""
 
 **School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR, DELHI -110091
 """)
+
