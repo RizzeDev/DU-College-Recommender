@@ -45,3 +45,4 @@ def best_suited_2026(user_percentile):
     predicted = predict_2026()
     recommended = best_suited(user_percentile)
     return predicted, recommended
+
