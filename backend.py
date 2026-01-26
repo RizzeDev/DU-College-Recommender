@@ -7,9 +7,15 @@ TOTAL_CANDIDATES = 1475000  # JEE 2025 approx
 def rank_to_percentile(rank):
     if pd.isna(rank) or rank <= 0:
         return 0.0
-    return round(100 - (rank / TOTAL_CANDIDATES * 100), 2)
 
-df = pd.read_csv("JEE.csv")
+    percentile = 100 - (rank / TOTAL_CANDIDATES * 100)
+
+    if percentile < 0:
+        percentile = 0
+
+    return round(percentile, 2)
+
+df = pd.read_csv("data/JEE.csv")
 
 df['Cutoff_2025'] = df['Closing_Rank'].apply(rank_to_percentile)
 
@@ -46,4 +52,13 @@ def best_suited_2026(user_percentile):
     recommended = best_suited(user_percentile)
     return predicted, recommended
 
+def percentile_and_air_2026(marks, total_candidates):
+    percentile = (marks / 300) * 100
+    if percentile > 100:
+        percentile = 99.99
+    if percentile < 0:
+        percentile = 0
 
+    air = int(((100 - percentile) / 100) * total_candidates) + 1
+
+    return round(percentile, 2), air
