@@ -52,8 +52,14 @@ with tab0:
 
 # ----------------- TAB 1 -------------------
 with tab1:
-    percentile = st.slider("Select Your JEE Percentile", 90, 100, 90)
-
+    percentile = st.slider(
+    "Select Your JEE Percentile",
+    min_value=90.0,
+    max_value=100.0,
+    value=90.0,
+    step=0.5
+   )
+    
     user_air = int(((100 - percentile) / 100) * TOTAL_CANDIDATES_2026) + 1
 
     st.subheader("Best Matches for Your Percentile")
@@ -105,4 +111,5 @@ st.sidebar.markdown("""
 
 **School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR, DELHI
 """)
+
 
