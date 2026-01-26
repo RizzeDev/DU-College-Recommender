@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 import numpy as np
 
-TOTAL_CANDIDATES = 1550000 
+TOTAL_CANDIDATES = 1550000
 
 df = pd.read_csv("JEE.csv")
 
@@ -61,3 +61,4 @@ def percentile_and_air_2026(marks, total_candidates):
 
     air = int(((100 - percentile) / 100) * total_candidates) + 1
     return round(percentile, 2), air
+
