@@ -18,7 +18,6 @@ def rank_to_percentile(rank):
     return round(percentile, 2)
 
 df['Cutoff_2025'] = df['Closing_Rank'].apply(rank_to_percentile)
-
 college_data = df[['College', 'Branch', 'Cutoff_2025']]
 
 def best_suited(percentile):
@@ -52,7 +51,9 @@ def best_suited_2026(user_percentile):
     return predicted, recommended
 
 def percentile_and_air_2026(marks, total_candidates):
-    percentile = (marks / 300) * 100
+    # Non-linear scaling to better approximate real JEE percentiles
+    normalized = marks / 300
+    percentile = (normalized ** 0.45) * 100
 
     if percentile > 100:
         percentile = 99.99
