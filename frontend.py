@@ -7,7 +7,6 @@ st.set_page_config(page_title="Delhi College Rec System", layout="wide")
 st.title("Delhi College Recommendation System 🏫🧑🏻‍🎓")
 st.write("Suggests colleges based on your JEE percentile.")
 
-
 tab0, tab1, tab2, tab3, tab4 = st.tabs([
     "Percentile Predictor",
     "Best Matches",
@@ -32,10 +31,7 @@ with tab0:
     TOTAL_CANDIDATES_2026 = 1550000
 
     if st.button("Predict Result"):
-        percentile, air = bk.percentile_and_air_2026(
-            marks,
-            TOTAL_CANDIDATES_2026
-        )
+        percentile, air = bk.percentile_and_air_2026(marks, TOTAL_CANDIDATES_2026)
 
         col1, col2 = st.columns(2)
 
@@ -109,6 +105,3 @@ st.sidebar.markdown("""
 
 **School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR, DELHI
 """)
-
-
-
