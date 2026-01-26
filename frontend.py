@@ -26,7 +26,7 @@ with tab0:
         "Marks out of 300",
         min_value=0,
         max_value=300,
-        value=0
+        value=
     )
 
     TOTAL_CANDIDATES_2026 = 1550000
@@ -109,4 +109,5 @@ st.sidebar.markdown("""
 
 **School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR, DELHI
 """)
+
 
