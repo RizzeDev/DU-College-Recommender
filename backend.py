@@ -1,19 +1,10 @@
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 import numpy as np
-import os
 
 TOTAL_CANDIDATES = 1550000 
 
-BASE_DIR = os.path.dirname(__file__)
-CSV_PATH = os.path.join(BASE_DIR, "data", "JEE.csv")
-
-df = pd.read_csv(CSV_PATH)
-
-
-df['Cutoff_2025'] = df['Closing_Rank'].apply(rank_to_percentile)
-
-college_data = df[['College', 'Branch', 'Cutoff_2025']]
+df = pd.read_csv("JEE.csv")
 
 def rank_to_percentile(rank):
     if pd.isna(rank) or rank <= 0:
@@ -25,6 +16,10 @@ def rank_to_percentile(rank):
         percentile = 0
 
     return round(percentile, 2)
+
+df['Cutoff_2025'] = df['Closing_Rank'].apply(rank_to_percentile)
+
+college_data = df[['College', 'Branch', 'Cutoff_2025']]
 
 def best_suited(percentile):
     lower = college_data[college_data['Cutoff_2025'] < percentile].copy()
@@ -40,7 +35,6 @@ def get_trend_data():
         "Cutoff_Percentile": [82.5, 84.2, 85.1, 86.8, 88.0, 89.5, 90.2, 91.0, 92.3, 93.8, 94.6]
     }
     return pd.DataFrame(data)
-
 
 trend_df = get_trend_data()
 
@@ -59,12 +53,11 @@ def best_suited_2026(user_percentile):
 
 def percentile_and_air_2026(marks, total_candidates):
     percentile = (marks / 300) * 100
+
     if percentile > 100:
         percentile = 99.99
     if percentile < 0:
         percentile = 0
 
     air = int(((100 - percentile) / 100) * total_candidates) + 1
-
     return round(percentile, 2), air
-
