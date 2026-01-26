@@ -42,6 +42,11 @@ with tab0:
         with col1:
             st.subheader("Predicted Percentile")
             st.write(f"{percentile} %")
+            # ✅ tiny clarification (ONLY ADDITION)
+            st.caption(
+                "Percentile is calculated using non-linear scaling "
+                "to better approximate real JEE Main distributions."
+            )
 
         with col2:
             st.subheader("Estimated AIR")
@@ -76,9 +81,11 @@ with tab3:
         .mark_line(point=True)
         .encode(
             x=alt.X("Year:O", title="Year"),
-            y=alt.Y("Cutoff_Percentile:Q",
-                    title="Percentile (80–100)",
-                    scale=alt.Scale(domain=[80, 100])),
+            y=alt.Y(
+                "Cutoff_Percentile:Q",
+                title="Percentile (80–100)",
+                scale=alt.Scale(domain=[80, 100])
+            ),
             tooltip=["Year", "Cutoff_Percentile"]
         )
         .properties(width=700, height=400, title="Cutoff Trend")
@@ -86,7 +93,7 @@ with tab3:
     st.altair_chart(chart, use_container_width=False)
 
 
-# ----------------- TAB 4 (AI PREDICTION 2026) -------------------
+# ----------------- TAB 4 -------------------
 with tab4:
     st.subheader("AI Prediction for JEE 2026 Cutoff")
 
@@ -105,10 +112,7 @@ st.sidebar.markdown("""
 - Eshan Awasthi  
 - Pratyush Singh  
 - Aditi Mishra  
-- Ryan Naqvi
+- Ryan Naqvi  
 
 **School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR, DELHI -110091
 """)
-
-
-
