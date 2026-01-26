@@ -4,12 +4,12 @@ import altair as alt
 
 st.set_page_config(page_title="Delhi College Rec System", layout="wide")
 
-st.title("Delhi College Recommendation System")
+st.title("Delhi College Recommendation System 🏫🧑🏻‍🎓")
 st.write("Suggests colleges based on your JEE percentile.")
 
 
 tab0, tab1, tab2, tab3, tab4 = st.tabs([
-    "🎯 Percentile Predictor",
+    "Percentile Predictor",
     "Best Matches",
     "All Colleges",
     "Cutoff Trend",
@@ -107,5 +107,6 @@ st.sidebar.markdown("""
 - Aditi Mishra 
 - Ryan Naqvi 
 
-**School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR, DELHI -110091 
+**School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR, DELHI
 """)
+
