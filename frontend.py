@@ -26,7 +26,7 @@ with tab0:
         "Marks out of 300",
         min_value=0,
         max_value=300,
-        value=130
+        value=0
     )
 
     TOTAL_CANDIDATES_2026 = 1550000
@@ -96,3 +96,16 @@ with tab4:
     predicted = bk.predict_2026()
     st.info(f"Predicted Cutoff Percentile for 2026: **{predicted}%**")
 
+# ----------------- Footer ------------------- 
+st.markdown("Project by Class 12 Students. Subject: Artificial Intelligence (843)") 
+st.sidebar.title("Project Info") 
+st.sidebar.markdown(""" 
+**Team Members** 
+- Ritesh Pathak 
+- Eshan Awasthi 
+- Pratyush Singh 
+- Aditi Mishra 
+- Ryan Naqvi 
+
+**School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR, DELHI -110091 
+""")
