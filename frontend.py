@@ -42,10 +42,9 @@ with tab0:
         with col1:
             st.subheader("Predicted Percentile")
             st.write(f"{percentile} %")
-            # ✅ tiny clarification (ONLY ADDITION)
             st.caption(
-                "Percentile is calculated using non-linear scaling "
-                "to better approximate real JEE Main distributions."
+                "Percentile is predicted using historical JEE marks vs percentile trends "
+                "with piecewise linear interpolation for 2026."
             )
 
         with col2:
@@ -53,8 +52,8 @@ with tab0:
             st.write(f"{air}")
 
         st.write(
-            "Note: This is only an estimate based on past trends. "
-            "Actual JEE results may vary."
+            "Note: This is only an estimate based on historical trends. "
+            "Actual JEE results may vary depending on shift difficulty."
         )
 
 # ----------------- TAB 1 -------------------
@@ -64,12 +63,10 @@ with tab1:
     result = bk.best_suited(percentile)
     st.dataframe(result.reset_index(drop=True), use_container_width=True)
 
-
 # ----------------- TAB 2 -------------------
 with tab2:
     st.subheader("All Colleges Cutoffs")
     st.dataframe(bk.show_all_cutoffs(), use_container_width=True)
-
 
 # ----------------- TAB 3 -------------------
 with tab3:
@@ -92,7 +89,6 @@ with tab3:
     )
     st.altair_chart(chart, use_container_width=False)
 
-
 # ----------------- TAB 4 -------------------
 with tab4:
     st.subheader("AI Prediction for JEE 2026 Cutoff")
@@ -100,19 +96,3 @@ with tab4:
     predicted = bk.predict_2026()
     st.info(f"Predicted Cutoff Percentile for 2026: **{predicted}%**")
 
-
-# ----------------- Footer -------------------
-
-st.markdown("Project by Class 12 Students. Subject: Artificial Intelligence (843)")
-
-st.sidebar.title("Project Info")
-st.sidebar.markdown("""
-**Team Members**  
-- Ritesh Pathak  
-- Eshan Awasthi  
-- Pratyush Singh  
-- Aditi Mishra  
-- Ryan Naqvi  
-
-**School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR, DELHI -110091
-""")
