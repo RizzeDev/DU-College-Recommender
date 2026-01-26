@@ -1,71 +1,58 @@
 import pandas as pd
-from sklearn.linear_model import LinearRegression
 
+# ---------------- DATA ----------------
 TOTAL_CANDIDATES = 1550000
-
-# Load historical cutoff data
 df = pd.read_csv("JEE.csv")
 
-def rank_to_percentile(rank):
-    if pd.isna(rank) or rank <= 0:
-        return 0.0
-    percentile = 100 - (rank / TOTAL_CANDIDATES * 100)
-    return round(max(percentile, 0), 2)
+college_data = df[['College', 'Branch', 'Closing_Rank']]
 
-df['Cutoff_2025'] = df['Closing_Rank'].apply(rank_to_percentile)
-college_data = df[['College', 'Branch', 'Cutoff_2025']]
+# ---------------- PERCENTILE PREDICTION ----------------
+def predict_percentile_from_marks(marks):
+    marks = max(0, min(300, marks))
 
-def best_suited(percentile):
-    lower = college_data[college_data['Cutoff_2025'] < percentile].copy()
-    lower['diff'] = percentile - lower['Cutoff_2025']
-    return lower.sort_values(by='diff').head(30).drop(columns=['diff'])
+    if marks <= 100:
+        percentile = 85 * marks / 100
+    elif marks <= 120:
+        percentile = 85 + (marks - 100) * (95 - 85) / 20
+    elif marks <= 130:
+        percentile = 95 + (marks - 120) * (96 - 95) / 10
+    elif marks <= 150:
+        percentile = 96 + (marks - 130) * (97 - 96) / 20
+    elif marks <= 180:
+        percentile = 97 + (marks - 150) * (98 - 97) / 30
+    elif marks <= 200:
+        percentile = 98 + (marks - 180) * (99 - 98) / 20
+    else:
+        percentile = 99 + (marks - 200) * (99.99 - 99) / 100
+
+    return round(min(percentile, 99.99), 2)
+
+# ---------------- AIR CALCULATION ----------------
+def percentile_to_air(percentile):
+    air = int(((100 - percentile) / 100) * TOTAL_CANDIDATES) + 1
+    return air
+
+# ---------------- MAIN FUNCTION ----------------
+def percentile_and_air_2026(marks, total_candidates):
+    percentile = predict_percentile_from_marks(marks)
+    air = percentile_to_air(percentile)
+    return percentile, air
+
+# ---------------- COLLEGE RECOMMENDATION ----------------
+def best_suited_by_air(user_air):
+    eligible = college_data[college_data['Closing_Rank'] >= user_air]
+    return eligible.sort_values(by='Closing_Rank').head(30)
 
 def show_all_cutoffs():
     return college_data
 
+# ---------------- TREND DATA (FOR GRAPH) ----------------
 def get_trend_data():
     data = {
         "Year": list(range(2015, 2026)),
-        "Cutoff_Percentile": [82.5, 84.2, 85.1, 86.8, 88.0, 89.5, 90.2, 91.0, 92.3, 93.8, 94.6]
+        "Cutoff_Percentile": [
+            82.5, 84.2, 85.1, 86.8, 88.0,
+            89.5, 90.2, 91.0, 92.3, 93.8, 94.6
+        ]
     }
     return pd.DataFrame(data)
-
-# Linear regression for AI prediction
-trend_df = get_trend_data()
-X = trend_df[['Year']]
-y = trend_df['Cutoff_Percentile']
-model = LinearRegression()
-model.fit(X, y)
-
-def predict_2026():
-    return round(model.predict([[2026]])[0], 2)
-
-def best_suited_2026(user_percentile):
-    predicted = predict_2026()
-    recommended = best_suited(user_percentile)
-    return predicted, recommended
-
-# ---------------- Percentile & AIR calculation using historical trends ----------------
-def percentile_and_air_2026(marks, total_candidates):
-    marks = max(0, min(300, marks))
-
-    # Piecewise linear interpolation based on historical marks vs percentile
-    if marks <= 100:
-        percentile = 85 * marks / 100            # 0-100 marks → 0-85%
-    elif marks <= 120:
-        percentile = 85 + (marks - 100) * (95 - 85) / (120 - 100)   # 100-120 → 85-95%
-    elif marks <= 130:
-        percentile = 95 + (marks - 120) * (96 - 95) / (130 - 120)   # 120-130 → 95-96%
-    elif marks <= 150:
-        percentile = 96 + (marks - 130) * (97 - 96) / (150 - 130)   # 130-150 → 96-97%
-    elif marks <= 180:
-        percentile = 97 + (marks - 150) * (98 - 97) / (180 - 150)   # 150-180 → 97-98%
-    elif marks <= 200:
-        percentile = 98 + (marks - 180) * (99 - 98) / (200 - 180)   # 180-200 → 98-99%
-    else:
-        percentile = 99 + (marks - 200) * (99.99 - 99) / (300 - 200) # 200-300 → 99-99.99%
-
-    percentile = min(max(percentile, 0), 99.99)
-    air = int(((100 - percentile) / 100) * total_candidates) + 1
-
-    return round(percentile, 2), air
