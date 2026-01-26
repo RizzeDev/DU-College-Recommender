@@ -29,7 +29,7 @@ with tab0:
         value=130
     )
 
-    TOTAL_CANDIDATES_2026 = 155+____0000
+    TOTAL_CANDIDATES_2026 = 1550000
 
     if st.button("Predict Result"):
         percentile, air = bk.percentile_and_air_2026(
@@ -109,5 +109,6 @@ st.sidebar.markdown("""
 
 **School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR, DELHI -110091
 """)
+
 
 
