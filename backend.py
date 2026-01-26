@@ -51,16 +51,25 @@ def best_suited_2026(user_percentile):
     return predicted, recommended
 
 def percentile_and_air_2026(marks, total_candidates):
-    # Non-linear scaling to better approximate real JEE percentiles
-    normalized = marks / 300
-    percentile = (normalized ** 0.85) * 100   
+    marks = max(0, min(300, marks))
 
-    if percentile > 100:
-        percentile = 99.99
-    if percentile < 0:
-        percentile = 0
+    if marks <= 100:
+        percentile = 85 * marks / 100            # 0-100 marks → 0-85%
+    elif marks <= 120:
+        percentile = 85 + (marks - 100) * (95 - 85) / (120 - 100)   # 100-120 → 85-95%
+    elif marks <= 130:
+        percentile = 95 + (marks - 120) * (96 - 95) / (130 - 120)   # 120-130 → 95-96%
+    elif marks <= 150:
+        percentile = 96 + (marks - 130) * (97 - 96) / (150 - 130)   # 130-150 → 96-97%
+    elif marks <= 180:
+        percentile = 97 + (marks - 150) * (98 - 97) / (180 - 150)   # 150-180 → 97-98%
+    elif marks <= 200:
+        percentile = 98 + (marks - 180) * (99 - 98) / (200 - 180)   # 180-200 → 98-99%
+    else:
+        percentile = 99 + (marks - 200) * (99.99 - 99) / (300 - 200) # 200-300 → 99-99.99%
+
+    percentile = min(max(percentile, 0), 99.99)
 
     air = int(((100 - percentile) / 100) * total_candidates) + 1
+
     return round(percentile, 2), air
-
-
