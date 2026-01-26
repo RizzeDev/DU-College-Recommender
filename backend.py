@@ -39,10 +39,11 @@ model = LinearRegression()
 model.fit(X, y)
 
 def predict_2026():
-    return round(float(model.predict([[2026]])), 2)
+    return round(model.predict([[2026]])[0], 2)
 
 def best_suited_2026(user_percentile):
     predicted = predict_2026()
     recommended = best_suited(user_percentile)
     return predicted, recommended
+
 
