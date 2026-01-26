@@ -18,7 +18,6 @@ tab0, tab1, tab2, tab3, tab4 = st.tabs([
 # ----------------- TAB 0 -------------------
 with tab0:
     st.header("JEE Main Percentile & AIR Predictor (2026)")
-
     st.write("Enter your expected JEE Main marks to get an idea of your percentile and rank.")
 
     marks = st.number_input(
@@ -39,8 +38,7 @@ with tab0:
             st.subheader("Predicted Percentile")
             st.write(f"{percentile} %")
             st.caption(
-                "Percentile is predicted using historical JEE marks vs percentile trends "
-                "with piecewise linear interpolation for 2026."
+                "Percentile is predicted using historical JEE marks vs percentile trends."
             )
 
         with col2:
@@ -48,15 +46,18 @@ with tab0:
             st.write(f"{air}")
 
         st.write(
-            "Note: This is only an estimate based on historical trends. "
+            "Note: This is only an estimate based on past trends. "
             "Actual JEE results may vary depending on shift difficulty."
         )
 
 # ----------------- TAB 1 -------------------
 with tab1:
     percentile = st.slider("Select Your JEE Percentile", 85, 100, 90)
+
+    user_air = int(((100 - percentile) / 100) * TOTAL_CANDIDATES_2026) + 1
+
     st.subheader("Best Matches for Your Percentile")
-    result = bk.best_suited(percentile)
+    result = bk.best_suited_by_air(user_air)
     st.dataframe(result.reset_index(drop=True), use_container_width=True)
 
 # ----------------- TAB 2 -------------------
@@ -88,20 +89,19 @@ with tab3:
 # ----------------- TAB 4 -------------------
 with tab4:
     st.subheader("AI Prediction for JEE 2026 Cutoff")
+    st.info("Predicted cutoff will be around **94–95 percentile** based on past trends.")
 
-    predicted = bk.predict_2026()
-    st.info(f"Predicted Cutoff Percentile for 2026: **{predicted}%**")
+# ----------------- FOOTER -------------------
+st.markdown("Project by Class 12 Students. Subject: Artificial Intelligence (843)")
 
-# ----------------- Footer ------------------- 
-st.markdown("Project by Class 12 Students. Subject: Artificial Intelligence (843)") 
-st.sidebar.title("Project Info") 
-st.sidebar.markdown(""" 
-**Team Members** 
-- Ritesh Pathak 
-- Eshan Awasthi 
-- Pratyush Singh 
-- Aditi Mishra 
-- Ryan Naqvi 
+st.sidebar.title("Project Info")
+st.sidebar.markdown("""
+**Team Members**
+- Ritesh Pathak  
+- Eshan Awasthi  
+- Pratyush Singh  
+- Aditi Mishra  
+- Ryan Naqvi  
 
 **School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR, DELHI
 """)
