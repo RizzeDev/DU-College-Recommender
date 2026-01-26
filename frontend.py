@@ -7,17 +7,54 @@ st.set_page_config(page_title="Delhi College Rec System", layout="wide")
 st.title("Delhi College Recommendation System")
 st.write("Suggests colleges based on your JEE percentile.")
 
-percentile = st.slider("Select Your JEE Percentile", 85, 100, 90)
 
-tab1, tab2, tab3, tab4 = st.tabs([
+tab0, tab1, tab2, tab3, tab4 = st.tabs([
+    "🎯 Percentile Predictor",
     "Best Matches",
     "All Colleges",
     "Cutoff Trend",
     "AI Prediction 2026"
 ])
 
+# ----------------- TAB 0 -------------------
+with tab0:
+    st.header("JEE Main Percentile & AIR Predictor (2026)")
+
+    st.write("Enter your expected JEE Main marks to get an idea of your percentile and rank.")
+
+    marks = st.number_input(
+        "Marks out of 300",
+        min_value=0,
+        max_value=300,
+        value=130
+    )
+
+    TOTAL_CANDIDATES_2026 = 155+____0000
+
+    if st.button("Predict Result"):
+        percentile, air = bk.percentile_and_air_2026(
+            marks,
+            TOTAL_CANDIDATES_2026
+        )
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.subheader("Predicted Percentile")
+            st.write(f"{percentile} %")
+
+        with col2:
+            st.subheader("Estimated AIR")
+            st.write(f"{air}")
+
+        st.write(
+            "Note: This is only an estimate based on past trends. "
+            "Actual JEE results may vary."
+        )
+
 # ----------------- TAB 1 -------------------
 with tab1:
+    percentile = st.slider("Select Your JEE Percentile", 85, 100, 90)
     st.subheader("Best Matches for Your Percentile")
     result = bk.best_suited(percentile)
     st.dataframe(result.reset_index(drop=True), use_container_width=True)
@@ -56,10 +93,6 @@ with tab4:
     predicted = bk.predict_2026()
     st.info(f"Predicted Cutoff Percentile for 2026: **{predicted}%**")
 
-    st.subheader("Best Colleges Based on Your Percentile")
-    reco = bk.best_suited(percentile)
-    st.dataframe(reco.reset_index(drop=True), use_container_width=True)
-
 
 # ----------------- Footer -------------------
 
@@ -76,4 +109,5 @@ st.sidebar.markdown("""
 
 **School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR, DELHI -110091
 """)
+
 
