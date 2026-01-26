@@ -53,7 +53,7 @@ def best_suited_2026(user_percentile):
 def percentile_and_air_2026(marks, total_candidates):
     # Non-linear scaling to better approximate real JEE percentiles
     normalized = marks / 300
-    percentile = (normalized ** 0.45) * 100
+    percentile = (normalized ** 0.85) * 100   
 
     if percentile > 100:
         percentile = 99.99
@@ -62,4 +62,5 @@ def percentile_and_air_2026(marks, total_candidates):
 
     air = int(((100 - percentile) / 100) * total_candidates) + 1
     return round(percentile, 2), air
+
 
