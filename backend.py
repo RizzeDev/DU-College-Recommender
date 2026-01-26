@@ -1,8 +1,19 @@
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 import numpy as np
+import os
 
-TOTAL_CANDIDATES = 1475000  # JEE 2025 approx
+TOTAL_CANDIDATES = 1550000 
+
+BASE_DIR = os.path.dirname(__file__)
+CSV_PATH = os.path.join(BASE_DIR, "data", "JEE.csv")
+
+df = pd.read_csv(CSV_PATH)
+
+
+df['Cutoff_2025'] = df['Closing_Rank'].apply(rank_to_percentile)
+
+college_data = df[['College', 'Branch', 'Cutoff_2025']]
 
 def rank_to_percentile(rank):
     if pd.isna(rank) or rank <= 0:
@@ -14,12 +25,6 @@ def rank_to_percentile(rank):
         percentile = 0
 
     return round(percentile, 2)
-
-df = pd.read_csv("data/JEE.csv")
-
-df['Cutoff_2025'] = df['Closing_Rank'].apply(rank_to_percentile)
-
-college_data = df[['College', 'Branch', 'Cutoff_2025']]
 
 def best_suited(percentile):
     lower = college_data[college_data['Cutoff_2025'] < percentile].copy()
@@ -62,3 +67,4 @@ def percentile_and_air_2026(marks, total_candidates):
     air = int(((100 - percentile) / 100) * total_candidates) + 1
 
     return round(percentile, 2), air
+
