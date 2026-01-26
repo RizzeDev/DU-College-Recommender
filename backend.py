@@ -1,21 +1,16 @@
 import pandas as pd
 from sklearn.linear_model import LinearRegression
-import numpy as np
 
 TOTAL_CANDIDATES = 1550000
 
+# Load historical cutoff data
 df = pd.read_csv("JEE.csv")
 
 def rank_to_percentile(rank):
     if pd.isna(rank) or rank <= 0:
         return 0.0
-
     percentile = 100 - (rank / TOTAL_CANDIDATES * 100)
-
-    if percentile < 0:
-        percentile = 0
-
-    return round(percentile, 2)
+    return round(max(percentile, 0), 2)
 
 df['Cutoff_2025'] = df['Closing_Rank'].apply(rank_to_percentile)
 college_data = df[['College', 'Branch', 'Cutoff_2025']]
@@ -35,8 +30,8 @@ def get_trend_data():
     }
     return pd.DataFrame(data)
 
+# Linear regression for AI prediction
 trend_df = get_trend_data()
-
 X = trend_df[['Year']]
 y = trend_df['Cutoff_Percentile']
 model = LinearRegression()
@@ -50,9 +45,11 @@ def best_suited_2026(user_percentile):
     recommended = best_suited(user_percentile)
     return predicted, recommended
 
+# ---------------- Percentile & AIR calculation using historical trends ----------------
 def percentile_and_air_2026(marks, total_candidates):
     marks = max(0, min(300, marks))
 
+    # Piecewise linear interpolation based on historical marks vs percentile
     if marks <= 100:
         percentile = 85 * marks / 100            # 0-100 marks → 0-85%
     elif marks <= 120:
@@ -69,7 +66,6 @@ def percentile_and_air_2026(marks, total_candidates):
         percentile = 99 + (marks - 200) * (99.99 - 99) / (300 - 200) # 200-300 → 99-99.99%
 
     percentile = min(max(percentile, 0), 99.99)
-
     air = int(((100 - percentile) / 100) * total_candidates) + 1
 
     return round(percentile, 2), air
