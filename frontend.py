@@ -34,8 +34,9 @@ with tab0:
         col2.metric("Approximate AIR", air)
 
         st.info(
-            "JEE percentile is a normalized score, not marks percentage. "
-            "Values shown are trend-based estimates."
+            "JEE Main percentile is a normalized score based on rank within a session, "
+            "not marks percentage. The values shown here are expected estimates based "
+            "on past-year trends and difficulty analysis."
         )
 
 # ---------------- TAB 1 ----------------
@@ -103,3 +104,4 @@ st.sidebar.markdown("""
 
 **School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR, DELHI
 """)
+
