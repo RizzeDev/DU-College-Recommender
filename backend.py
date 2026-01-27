@@ -21,16 +21,27 @@ college_data = long_df.rename(columns={
 # ---------------- PERCENTILE PREDICTION ----------------
 def predict_percentile_from_marks(marks):
     marks = max(0, min(300, marks))
-
-    if marks <= 100:
-        percentile = 80 * marks / 100           # 0-100 marks
-    elif marks <= 200:
-        percentile = 80 + (marks - 100) * 0.65 # 100-200 marks, much steeper
+    
+    if marks >= 240:
+        percentile = 99.95 + (marks-240)*0.01      # 240-280 -> 99.95-99.99+
+    elif marks >= 210:
+        percentile = 99.5 + (marks-210)*(0.4/30)  # 210-240 -> 99.5-99.9
+    elif marks >= 180:
+        percentile = 99 + (marks-180)*(0.5/30)    # 180-210 -> 99-99.5
+    elif marks >= 160:
+        percentile = 98 + (marks-160)*(1/20)      # 160-180 -> 98-99
+    elif marks >= 140:
+        percentile = 97 + (marks-140)*(1/20)      # 140-160 -> 97-98
+    elif marks >= 120:
+        percentile = 95 + (marks-120)*(2/20)      # 120-140 -> 95-97
+    elif marks >= 100:
+        percentile = 90 + (marks-100)*(5/20)      # 100-120 -> 90-95
+    elif marks >= 70:
+        percentile = 80 + (marks-70)*(10/30)      # 70-100 -> 80-90
     else:
-        percentile = 95 + (marks - 200) * 0.02 # 200+ marks
+        percentile = marks*80/70                   # 0-70 -> 0-80
 
-    percentile = min(percentile, 100)
-    return round(percentile, 2)
+    return round(min(percentile, 100), 2)
 
 # ---------------- AIR CALCULATION ----------------
 def percentile_to_air(percentile):
@@ -74,4 +85,5 @@ def get_trend_data():
             89.5, 90.2, 91.0, 92.3, 93.8, 94.6
         ]
     })
+
 
