@@ -1,21 +1,38 @@
 import pandas as pd
+import re
 
 TOTAL_CANDIDATES = 1550000
 df = pd.read_csv("JEE.csv")
 df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
 
-# ---- AUTO DETECT COLUMNS ----
-text_cols = df.select_dtypes(include="object").columns.tolist()
-num_cols = df.select_dtypes(include="number").columns.tolist()
 
-if len(text_cols) < 2 or len(num_cols) < 1:
-    raise ValueError("CSV must contain at least 2 text columns and 1 numeric column")
+# ---------------- FORCE NUMERIC CONVERSION ----------------
+def to_number(series):
+    return (
+        series.astype(str)
+        .str.replace(",", "", regex=False)
+        .str.extract(r"(\d+)", expand=False)
+        .astype(float)
+    )
+
+# Try converting ALL columns to numeric where possible
+numeric_scores = {}
+
+for col in df.columns:
+    converted = to_number(df[col])
+    numeric_scores[col] = converted.notna().sum()
+    df[col] = converted if converted.notna().sum() > 0 else df[col]
+
+# Pick the column with MOST numeric values as closing rank
+closing_col = max(numeric_scores, key=numeric_scores.get)
+
+# Pick first two non-numeric columns as college & branch
+text_cols = [c for c in df.columns if c != closing_col]
 
 college_col = text_cols[0]
-branch_col = text_cols[1]
-closing_col = num_cols[0]
+branch_col = text_cols[1] if len(text_cols) > 1 else text_cols[0]
 
-college_data = df[[college_col, branch_col, closing_col]].copy()
+college_data = df[[college_col, branch_col, closing_col]].dropna()
 college_data.columns = ["college", "branch", "closing_rank"]
 
 # ---------------- PERCENTILE ----------------
@@ -31,7 +48,6 @@ def predict_percentile_from_marks(marks):
 
     return round(percentile, 2)
 
-# ---------------- AIR ----------------
 def percentile_to_air(percentile):
     return int(((100 - percentile) / 100) * TOTAL_CANDIDATES) + 1
 
