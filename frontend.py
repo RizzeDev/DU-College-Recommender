@@ -17,38 +17,24 @@ tab0, tab1, tab2, tab3, tab4 = st.tabs([
     "AI Prediction 2026"
 ])
 
-# ----------------- TAB 0 -------------------
+# ---------------- TAB 0 ----------------
 with tab0:
     st.header("JEE Main Percentile & AIR Predictor (2026)")
 
-    marks = st.number_input(
-        "Marks out of 300",
-        min_value=0,
-        max_value=300,
-        value=0
-    )
+    marks = st.number_input("Marks out of 300", 0, 300, 0)
 
     if st.button("Predict Result"):
         percentile, air = bk.percentile_and_air_2026(marks)
 
         col1, col2 = st.columns(2)
+        col1.metric("Predicted Percentile", f"{percentile} %")
+        col2.metric("Estimated AIR", air)
 
-        with col1:
-            st.subheader("Predicted Percentile")
-            st.write(f"{percentile} %")
-
-        with col2:
-            st.subheader("Estimated AIR")
-            st.write(f"{air}")
-
-# ----------------- TAB 1 -------------------
+# ---------------- TAB 1 ----------------
 with tab1:
     percentile = st.slider(
         "Select Your JEE Percentile",
-        min_value=90.0,
-        max_value=100.0,
-        value=90.0,
-        step=0.5
+        90.0, 100.0, 90.0, 0.5
     )
 
     user_air = int(((100 - percentile) / 100) * TOTAL_CANDIDATES_2026) + 1
@@ -57,12 +43,12 @@ with tab1:
     result = bk.best_suited_by_air(user_air)
     st.dataframe(result.reset_index(drop=True), use_container_width=True)
 
-# ----------------- TAB 2 -------------------
+# ---------------- TAB 2 ----------------
 with tab2:
     st.subheader("All Colleges Cutoffs")
     st.dataframe(bk.show_all_cutoffs(), use_container_width=True)
 
-# ----------------- TAB 3 -------------------
+# ---------------- TAB 3 ----------------
 with tab3:
     st.subheader("JEE Mains Cutoff Trend (2015–2025)")
     trend = bk.get_trend_data()
@@ -72,17 +58,14 @@ with tab3:
         .mark_line(point=True)
         .encode(
             x="Year:O",
-            y=alt.Y(
-                "Cutoff_Percentile:Q",
-                scale=alt.Scale(domain=[80, 100])
-            ),
+            y=alt.Y("Cutoff_Percentile:Q", scale=alt.Scale(domain=[80, 100])),
             tooltip=["Year", "Cutoff_Percentile"]
         )
     )
 
     st.altair_chart(chart, use_container_width=True)
 
-# ----------------- TAB 4 -------------------
+# ---------------- TAB 4 ----------------
 with tab4:
     st.subheader("AI Prediction for JEE 2026")
     st.info("Predicted cutoff will be around **94–95 percentile** based on past trends.")
@@ -102,6 +85,3 @@ st.sidebar.markdown("""
 
 **School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR, DELHI
 """)
-
-
-
