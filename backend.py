@@ -1,21 +1,14 @@
 import pandas as pd
 
-TOTAL_CANDIDATES = 15_50_000
+TOTAL_CANDIDATES = 1550000
 
 df = pd.read_csv("JEE.csv")
 
-df.columns = df.columns.str.strip()         
-df.columns = df.columns.str.replace(" ", "_") 
-df.columns = df.columns.str.lower()         
+df.columns = df.columns.str.strip()
+df.columns = df.columns.str.replace(" ", "_")
+df.columns = df.columns.str.lower()
 
-
-required_cols = ['college', 'branch', 'closing_rank']
-missing = [c for c in required_cols if c not in df.columns]
-
-if missing:
-    raise ValueError(f"CSV is missing columns: {missing}")
-
-college_data = df[required_cols]
+college_data = df[['college', 'branch', 'closing_rank']]
 
 # ---------------- PERCENTILE PREDICTION ----------------
 def predict_percentile_from_marks(marks):
@@ -40,7 +33,8 @@ def predict_percentile_from_marks(marks):
 
 # ---------------- AIR CALCULATION ----------------
 def percentile_to_air(percentile):
-    return int(((100 - percentile) / 100) * TOTAL_CANDIDATES) + 1
+    air = int(((100 - percentile) / 100) * TOTAL_CANDIDATES) + 1
+    return air
 
 # ---------------- MAIN FUNCTION ----------------
 def percentile_and_air_2026(marks):
@@ -58,10 +52,11 @@ def show_all_cutoffs():
 
 # ---------------- TREND DATA ----------------
 def get_trend_data():
-    return pd.DataFrame({
+    data = {
         "Year": list(range(2015, 2026)),
         "Cutoff_Percentile": [
             82.5, 84.2, 85.1, 86.8, 88.0,
             89.5, 90.2, 91.0, 92.3, 93.8, 94.6
         ]
-    })
+    }
+    return pd.DataFrame(data)
