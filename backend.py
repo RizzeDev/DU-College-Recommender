@@ -21,17 +21,17 @@ college_data = long_df.rename(columns={
 # ---------------- PERCENTILE PREDICTION ----------------
 def predict_percentile_from_marks(marks):
     """
-    Predicts percentile based on marks using simple conditions.
-    Easy to explain for Class 12 teachers.
+    Predicts percentile based on marks using a simple but slightly more realistic approximation.
+    Easy to explain to Class 12 teachers.
     """
     marks = max(0, min(300, marks)) 
 
     if marks <= 100:
-        percentile = 85 * marks / 100
+        percentile = 85 * marks / 100                # linear growth up to 100 marks
     elif marks <= 200:
-        percentile = 85 + (marks - 100) * 0.145
+        percentile = 85 + (marks - 100) * 0.145     # slightly steeper for 100-200 marks
     else:
-        percentile = 99 + (marks - 200) * 0.01
+        percentile = 99 + (marks - 200) * 0.01      # tiny growth after 200 marks
 
     return round(percentile, 2)
 
