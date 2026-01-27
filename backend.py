@@ -10,7 +10,6 @@ long_df = df.melt(
 )
 
 long_df = long_df.dropna()
-
 long_df["Closing_Rank"] = long_df["Closing_Rank"].astype(int)
 
 college_data = long_df.rename(columns={
@@ -23,16 +22,16 @@ college_data = long_df.rename(columns={
 def predict_percentile_from_marks(marks):
     """
     Predicts percentile based on marks using simple conditions.
-    This is an approximation using past trends.
+    Easy to explain for Class 12 teachers.
     """
     marks = max(0, min(300, marks)) 
 
     if marks <= 100:
         percentile = 85 * marks / 100
     elif marks <= 200:
-        percentile = 85 + (marks - 100) * 0.14
+        percentile = 85 + (marks - 100) * 0.145
     else:
-        percentile = 99.5
+        percentile = 99 + (marks - 200) * 0.01
 
     return round(percentile, 2)
 
