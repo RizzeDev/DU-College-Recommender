@@ -92,3 +92,11 @@ st.sidebar.markdown("""
 **School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR, DELHI
 """)
 
+#-------------------INFO---------------------
+st.info(
+    "JEE Main percentile is a normalized score based on rank within a session, "
+    "not marks percentage. The values shown here are expected estimates based "
+    "on past-year trends and difficulty analysis."
+)
+
+
