@@ -20,21 +20,15 @@ college_data = long_df.rename(columns={
 
 # ---------------- PERCENTILE PREDICTION ----------------
 def predict_percentile_from_marks(marks):
-    """
-    Predicts percentile based on marks using a simple approximation.
-    Adjusted to match expected 2026 JEE marks vs percentile table.
-    Easy to explain to Class 12 teachers.
-    """
-    marks = max(0, min(300, marks)) 
+    marks = max(0, min(300, marks))
 
     if marks <= 100:
-        percentile = 80 * marks / 100           # slower growth for 0-100 marks
+        percentile = 80 * marks / 100           # 0-100 marks
     elif marks <= 200:
-        percentile = 80 + (marks - 100) * 0.15  # faster growth 100-200 marks
+        percentile = 80 + (marks - 100) * 0.65 # 100-200 marks, much steeper
     else:
-        percentile = 95 + (marks - 200) * 0.02  # tiny growth above 200
+        percentile = 95 + (marks - 200) * 0.02 # 200+ marks
 
-    # Cap at 100
     percentile = min(percentile, 100)
     return round(percentile, 2)
 
@@ -80,3 +74,4 @@ def get_trend_data():
             89.5, 90.2, 91.0, 92.3, 93.8, 94.6
         ]
     })
+
