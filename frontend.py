@@ -34,6 +34,13 @@ with tab0:
         col1.metric("Predicted Percentile", f"{percentile} %")
         col2.metric("Estimated AIR", air)
 
+    st.info(
+    "JEE Main percentile is a normalized score based on rank within a session, "
+    "not marks percentage. The values shown here are expected estimates based "
+    "on past-year trends and difficulty analysis."
+)
+
+
 # ---------------- TAB 1 ----------------
 with tab1:
     st.subheader("Best Matches for Your Percentile")
@@ -91,12 +98,4 @@ st.sidebar.markdown("""
 
 **School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR, DELHI
 """)
-
-#-------------------INFO---------------------
-st.info(
-    "JEE Main percentile is a normalized score based on rank within a session, "
-    "not marks percentage. The values shown here are expected estimates based "
-    "on past-year trends and difficulty analysis."
-)
-
 
