@@ -1,10 +1,21 @@
 import pandas as pd
 
-# ---------------- DATA ----------------
-TOTAL_CANDIDATES = 1550000
+TOTAL_CANDIDATES = 15_50_000
+
 df = pd.read_csv("JEE.csv")
 
-college_data = df[['College', 'Branch', 'Closing_Rank']]
+df.columns = df.columns.str.strip()         
+df.columns = df.columns.str.replace(" ", "_") 
+df.columns = df.columns.str.lower()         
+
+
+required_cols = ['college', 'branch', 'closing_rank']
+missing = [c for c in required_cols if c not in df.columns]
+
+if missing:
+    raise ValueError(f"CSV is missing columns: {missing}")
+
+college_data = df[required_cols]
 
 # ---------------- PERCENTILE PREDICTION ----------------
 def predict_percentile_from_marks(marks):
@@ -29,30 +40,28 @@ def predict_percentile_from_marks(marks):
 
 # ---------------- AIR CALCULATION ----------------
 def percentile_to_air(percentile):
-    air = int(((100 - percentile) / 100) * TOTAL_CANDIDATES) + 1
-    return air
+    return int(((100 - percentile) / 100) * TOTAL_CANDIDATES) + 1
 
 # ---------------- MAIN FUNCTION ----------------
-def percentile_and_air_2026(marks, total_candidates):
+def percentile_and_air_2026(marks):
     percentile = predict_percentile_from_marks(marks)
     air = percentile_to_air(percentile)
     return percentile, air
 
 # ---------------- COLLEGE RECOMMENDATION ----------------
 def best_suited_by_air(user_air):
-    eligible = college_data[college_data['Closing_Rank'] >= user_air]
-    return eligible.sort_values(by='Closing_Rank').head(30)
+    eligible = college_data[college_data['closing_rank'] >= user_air]
+    return eligible.sort_values(by='closing_rank').head(30)
 
 def show_all_cutoffs():
     return college_data
 
-# ---------------- TREND DATA (FOR GRAPH) ----------------
+# ---------------- TREND DATA ----------------
 def get_trend_data():
-    data = {
+    return pd.DataFrame({
         "Year": list(range(2015, 2026)),
         "Cutoff_Percentile": [
             82.5, 84.2, 85.1, 86.8, 88.0,
             89.5, 90.2, 91.0, 92.3, 93.8, 94.6
         ]
-    }
-    return pd.DataFrame(data)
+    })
