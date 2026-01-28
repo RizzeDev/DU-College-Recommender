@@ -19,7 +19,7 @@ tab0, tab1, tab2, tab3, tab4 = st.tabs([
 
 # ---------------- TAB 0 ----------------
 with tab0:
-    st.header("JEE Main Percentile & AIR Predictor (2026)")
+    st.header("JEE Main Percentile & AIR Predictor")
 
     marks = st.number_input(
         "Enter your JEE Marks out of 300",
@@ -104,6 +104,7 @@ st.sidebar.markdown("""
 
 **School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR, DELHI
 """)
+
 
 
 
