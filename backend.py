@@ -20,8 +20,11 @@ long_df["Closing_Rank"] = long_df["Closing_Rank"].astype(int)
 def predict_percentile_from_marks(marks):
     marks = max(0, min(300, marks))
 
-    if marks >= 240:
-        percentile = 99.9
+    
+    if marks == 300:
+        percentile = 100
+    elif marks >= 240:
+        percentile = 99.5 + (marks - 240) * (0.2 / 30)
     elif marks >= 210:
         percentile = 99.5 + (marks - 210) * (0.4 / 30)
     elif marks >= 180:
@@ -86,5 +89,6 @@ def predict_cutoff_2026():
 
     predicted_2026 = model.predict([[2026]])[0]
     return round(predicted_2026, 2)
+
 
 
