@@ -7,14 +7,14 @@ TOTAL_CANDIDATES = 1550000
 # ---------------- LOAD DATA ----------------
 df = pd.read_csv("JEE.csv")
 
-long_df = df.melt(
+college_data = df.melt(
     id_vars=["College"],
     var_name="Branch",
     value_name="Closing_Rank"
 )
 
-long_df = long_df.dropna()
-long_df["Closing_Rank"] = long_df["Closing_Rank"].astype(int)
+college_data = college_data.dropna()
+college_data["Closing_Rank"] = college_data["Closing_Rank"].astype(int)
 
 # ---------------- PERCENTILE ESTIMATION ----------------
 def predict_percentile_from_marks(marks):
@@ -53,7 +53,7 @@ def percentile_and_air_2026(marks):
 
 # ---------------- COLLEGE RECOMMENDATION ----------------
 def best_suited_by_air(user_air):
-    eligible = long_df[long_df["Closing_Rank"] >= user_air]
+    eligible = college_data[college_data["Closing_Rank"] >= user_air]
     return eligible.sort_values("Closing_Rank").head(30)
 
 def show_all_cutoffs():
@@ -86,6 +86,7 @@ def predict_cutoff_2026():
 
     predicted_2026 = model.predict([[2026]])[0]
     return round(predicted_2026, 2)
+
 
 
 
