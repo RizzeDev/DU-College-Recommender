@@ -16,11 +16,6 @@ long_df = df.melt(
 long_df = long_df.dropna()
 long_df["Closing_Rank"] = long_df["Closing_Rank"].astype(int)
 
-college_data = long_df.rename(columns={
-    "College": "college",
-    "Branch": "branch",
-    "Closing_Rank": "closing_rank"
-})
 
 # ---------------- PERCENTILE ESTIMATION ----------------
 def predict_percentile_from_marks(marks):
@@ -92,3 +87,4 @@ def predict_cutoff_2026():
 
     predicted_2026 = model.predict([[2026]])[0]
     return round(predicted_2026, 2)
+
