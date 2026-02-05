@@ -53,8 +53,8 @@ def percentile_and_air_2026(marks):
 
 # ---------------- COLLEGE RECOMMENDATION ----------------
 def best_suited_by_air(user_air):
-    eligible = college_data[college_data["closing_rank"] >= user_air]
-    return eligible.sort_values("closing_rank").head(30)
+    eligible = long_df[long_df["Closing_Rank"] >= user_air]
+    return eligible.sort_values("Closing_Rank").head(30)
 
 def show_all_cutoffs():
     return college_data
@@ -86,6 +86,7 @@ def predict_cutoff_2026():
 
     predicted_2026 = model.predict([[2026]])[0]
     return round(predicted_2026, 2)
+
 
 
 
