@@ -4,7 +4,7 @@ import altair as alt
 
 st.set_page_config(page_title="Delhi College Rec System", layout="wide")
 
-st.title("Delhi College Recommendation System 🏫🧑🏻‍🎓")
+st.title("Delhi BTech College Recommendation System 🏫🧑🏻‍🎓")
 st.write("Suggests colleges based on your expected JEE percentile.")
 
 TOTAL_CANDIDATES_2026 = 1550000
@@ -104,6 +104,7 @@ st.sidebar.markdown("""
 
 **School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR, DELHI
 """)
+
 
 
 
